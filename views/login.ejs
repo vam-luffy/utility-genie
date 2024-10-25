@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Utility Management System</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/auth.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo-main" id="logo-up">Utility</h1>
+        <h1 class="logo-main" id="logo-down">Genie</h1>
+    </header>
+
+    <div class="auth-container">
+        <form action="/login" method="POST" class="auth-form">
+            <h2>Login</h2>
+
+            <!-- Display error message if email is already in use -->
+            <% if (errorMessage) { %>
+                <p class="error-message"><%= errorMessage %></p>
+            <% } %>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="btn-submit">Login</button>
+            <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Utility Genie. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utility Management System</title>
+    <link rel="stylesheet" href="styles/style.css"> <!-- Make sure the path to your CSS is correct -->
+    <script>
+        function checkLogin() {
+            const userLoggedIn = <%= user ? 'true' : 'false' %>; // Check if the user is logged in
+            if (!userLoggedIn) {
+                alert("You need to log in to access certain features.");
+            }
+        }
+    </script>
+</head>
+<body onload="checkLogin()">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <% if (user) { %> <!-- Only show these links if user is logged in -->
+                    <li><a href="/signup">Register</a></li> <!-- Redirecting to signup page -->
+                    <li><a href="/login">Find Providers</a></li> <!-- Redirecting to login page -->
+                    <li><a href="/work-with-us">Work with Us</a></li> <!-- Redirecting to Work with Us page -->
+                <% } %>
+            </ul>
+            <div class="auth-buttons">
+                <% if (user) { %> <!-- Check if user is logged in -->
+                    <a href="/logout" class="btn-logout">Logout</a> <!-- Logout button -->
+                <% } else { %>
+                    <a href="/login" class="btn-login">Login</a> <!-- Redirecting to login page -->
+                    <a href="/signup" class="btn-signup">Signup</a> <!-- Redirecting to signup page -->
+                <% } %>
+            </div>
+        </nav>
+        <h1 class="logo-main" id="logo-up">Utility</h1>
+        <h1 class="logo-main" id="logo-down">Genie</h1>
+        <p class="basic-info">Welcome to your trusted companion for all your home service needs! Whether you’re in a pinch or planning a project, we connect you with friendly and skilled plumbers, electricians, and mechanics right in your neighborhood. Let us help you bring comfort and convenience back to your home.</p>
+    </header>
+
+    <section id="services">
+        <h2>Our Services</h2>
+        <div class="service-card">
+            <a href="/plumbers"><h3>Plumbers</h3></a>
+            <p>Need a plumber to fix your pipes? We’ve got you covered!</p>
+        </div>
+        <div class="service-card">
+            <a href="/electricians"><h3>Electricians</h3></a>
+            <p>Our electricians can handle any electrical work safely and efficiently.</p>
+        </div>
+        <div class="service-card">
+            <a href="/mechanics"><h3>Mechanics</h3></a>
+            <p>For all your vehicle repair needs, our mechanics are just a click away.</p>
+        </div>
+    </section>
+
+    <hr>
+    <hr>
+    
+    <section id="how-it-works">
+        <h2>How It Works</h2>
+        <p>Getting the help you need is simple!</p>
+        <ol>
+            <li>**Register**: Sign up and create your profile.</li>
+            <li>**Search**: Find service providers in your area based on your needs.</li>
+            <li>**Connect**: Contact your selected provider and schedule a service.</li>
+        </ol>
+        <p>We ensure that all our service providers are verified and rated to guarantee quality service.</p>
+    </section>
+
+    <section id="testimonials">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial">
+            <p>"Utility Genie saved me during an emergency! The plumber arrived quickly and did a fantastic job." - Sarah J.</p>
+        </div>
+        <div class="testimonial">
+            <p>"I found an electrician through this service, and I couldn't be happier with the work done!" - Mark T.</p>
+        </div>
+        <div class="testimonial">
+            <p>"Highly recommend Utility Genie! The mechanics are skilled and reliable." - Emily R.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Utility Genie. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

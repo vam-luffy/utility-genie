@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/w-dasboard.css">
+    <title>Worker Dashboard</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome, <%= user.username %>!</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Profession: <%= user.profession %></h2>
+            <h3>Location: <%= user.location %></h3>
+        </section>
+
+        <section>
+            <h2>Your Tasks</h2>
+            <% if (tasks.length > 0) { %>
+                <ul>
+                    <% tasks.forEach(task => { %>
+                        <li><%= task.description %></li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No tasks available at the moment.</p>
+            <% } %>
+        </section>
+
+        <section>
+            <section>
+                <h2>Application Status</h2>
+                <% if (application) { %>
+                    <p>Your application is submitted.</p>
+                    <p>Name: <%= application.name %></p>
+                    <p>Government ID: <%= application.government_id %></p>
+                    <p>Experience: <%= application.experience %> years</p>
+                    <p>Profession: <%= application.profession %></p>
+                    <p>Location: <%= application.location %></p>
+                    <% if (application.profile_picture) { %>
+                        <img src="<%= application.profile_picture %>" alt="Profile Picture" style="width: 150px; height: auto;">
+                    <% } %>
+                <% } else { %>
+                    <p>No application found. Please fill out the application form.</p>
+                    <form action="/application_form" method="GET">
+                        <button type="submit">Fill Application</button>
+                    </form>
+                <% } %>
+            </section>
+            
+    </main>
+    <footer>
+        <p>&copy; 2024 Utility Management System</p>
+    </footer>
+</body>
+</html>

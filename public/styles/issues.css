@@ -1,0 +1,108 @@
+/* issues.css */
+
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styles */
+.header {
+    background-color: #007BFF; /* Bootstrap primary color */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section styles */
+.issues-section {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* List styles */
+.issues-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between cards */
+}
+
+.issue-card {
+    background-color: #f9f9f9; /* Light grey for card background */
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #e1e1e1; /* Light border for card */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.issue-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+}
+
+.issue-card h3 {
+    margin: 0 0 10px;
+    color: #007BFF; /* Service title color */
+}
+
+/* Image styles */
+.issue-photo {
+    max-width: 100%; /* Limit image width to 100% of the card */
+    height: auto;    /* Maintain aspect ratio */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Light shadow for images */
+}
+
+/* Footer styles */
+.footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #333;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+}
+/* issues.css */
+
+/* Other existing styles remain unchanged */
+
+/* Button styles */
+.delete-button {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+.delete-button:focus {
+    outline: none; /* Remove outline on focus */
+}
+
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .issues-section {
+        padding: 15px; /* Less padding on smaller screens */
+    }
+
+    .issue-card {
+        padding: 15px; /* Less padding in cards */
+    }
+}

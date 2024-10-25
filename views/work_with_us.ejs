@@ -1,0 +1,49 @@
+<!-- work_with_us.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work with Us - Utility Management System</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/auth1.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo-main" id="logo-up">Utility</h1>
+        <h1 class="logo-main" id="logo-down">Genie</h1>
+    </header>
+
+    <div class="work-container">
+        <h2>Join Our Team!</h2>
+        <p>We are looking for skilled plumbers, electricians, and mechanics to join our platform. Here’s how you can work with us:</p>
+        
+        <h3>How It Works</h3>
+        <ol>
+            <li>**Fill Out the Application**: Complete the application form below.</li>
+            <li>**Verify**: Complete our verification process.</li>
+            <li>**Start Accepting Jobs**: Connect with customers needing your services.</li>
+        </ol>
+
+        <h3>Login</h3>
+        <form action="/login?redirect=application_form" method="POST" class="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <!-- Hidden input to pass redirect URL -->
+            <input type="hidden" name="redirect" value="application_form">
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Utility Genie. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

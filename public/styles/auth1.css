@@ -1,0 +1,158 @@
+/* Header Container */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+}
+
+/* Logo Styling */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-main {
+    font-family: 'Arial', sans-serif; /* Change to a suitable font */
+    font-weight: bold;
+    font-size: 36px;
+    margin: 0;
+}
+
+/* Navigation Bar */
+.nav {
+    font-size: 18px; /* Adjust font size */
+}
+
+.nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav li {
+    margin: 0 15px; /* Space between menu items */
+}
+
+.nav a {
+    color: white; /* Link color */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth color change on hover */
+}
+
+.nav a:hover {
+    color: #ffcc00; /* Change link color on hover */
+}
+
+/* Container styling */
+.work-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+.work-container h2 {
+    color: #2c3e50; /* Darker color for headings */
+    font-size: 36px;
+    margin-bottom: 15px;
+    text-align: center; /* Center align the main heading */
+}
+
+.work-container p {
+    font-size: 18px;
+    color: #34495e; /* Slightly lighter color for text */
+    text-align: center; /* Center align the introductory text */
+    margin-bottom: 25px;
+}
+
+.work-container h3 {
+    font-size: 28px;
+    color: #2980b9; /* Blue color for subheadings */
+    margin-top: 30px;
+    text-decoration: underline; /* Underline subheadings */
+}
+
+/* Ordered list for 'How It Works' */
+.work-container ol {
+    margin-left: 20px;
+    color: #555;
+    font-size: 18px;
+}
+
+.work-container ol li {
+    margin-bottom: 10px;
+}
+
+/* Login Form */
+.login-form {
+    margin-top: 30px;
+    background-color: #f9f9f9; /* Light gray for the form */
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Labels */
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Input Fields */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #2980b9; /* Change border color on focus */
+}
+
+/* Login Button */
+.login-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2980b9; /* Blue background for the button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.login-form button:hover {
+    background-color: #1a6f9c; /* Darker blue on hover */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+}
+h1#logo-down {
+    position: relative;
+    left: 4rem;
+    top: -3.0rem;
+}

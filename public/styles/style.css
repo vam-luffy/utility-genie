@@ -1,0 +1,261 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/* General Styling for Home Page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+h1#logo-up {
+    position: relative;
+    left: -3rem;
+}
+
+.logo-main::first-letter {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 800;
+    color: black;
+}
+
+h1#logo-down {
+    position: relative;
+    left: 3rem;
+    top: -3.9rem;
+}
+
+header {
+    background-color: #0e2274ad;
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+}
+header nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+header nav ul li {
+    flex-shrink: 0; /* Prevent items from shrinking */
+    margin: 0 15px; /* Space between items */
+}
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+header nav ul li a:hover {
+    border: 2px solid white;
+}
+
+p.basic-info {
+    font-weight: 700;
+    color: black;
+    font-family: fangsong;
+    font-size: medium;
+}
+
+/* Styling for Login and Signup buttons */
+.auth-buttons {
+    display: inline-block;
+    margin-left: 30px;
+    position: relative;
+    left: 38rem;
+    top: -3rem;
+}
+.auth-buttons a {
+    color: black;
+    background-color: transparent;
+    border: 2px solid white;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.auth-buttons a:hover {
+    background-color: white;
+    color: #007BFF;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+p {
+    font-size: 18px;
+}
+
+#services {
+    background-color: white;
+    padding: 50px;
+    text-align: center;
+}
+
+#services h2 {
+    margin-bottom: 30px;
+}
+
+.service-card {
+    display: inline-block;
+    width: 30%;
+    margin: 10px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-card h3 {
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+.service-card p {
+    font-size: 16px;
+    color: #333;
+}
+
+/* New Styles for How It Works Section */
+#how-it-works {
+    background-color: white;
+    padding: 50px;
+    text-align: center;
+}
+
+#how-it-works h2 {
+    margin-bottom: 30px;
+}
+
+#how-it-works ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+#how-it-works li {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+/* New Styles for Testimonials Section */
+#testimonials {
+    background-color: #e7f3ff;
+    padding: 50px;
+    text-align: center;
+}
+
+#testimonials h2 {
+    margin-bottom: 30px;
+}
+
+.testimonial {
+    margin: 15px 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-style: italic;
+    color: #555;
+}
+/* Styles for Work with Us Page */
+#application-form {
+    background-color: white;
+    padding: 50px;
+    text-align: center;
+}
+
+#application-form h2 {
+    margin-bottom: 30px;
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+}
+
+form label {
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+form input, form select {
+    width: 300px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+form input[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    bottom: -9px;
+}
+
+footer p {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* 'Add responsiveness for smaller screens */
+ @media (max-width: 768px) {
+    .service-card {
+        width: 80%; /* Adjust width for mobile */
+    }
+
+    .auth-buttons {
+        position: static; /* Adjust button position for mobile */
+        margin-left: 0;
+        margin-top: 20px; /* Add margin for spacing */
+    }
+
+    #how-it-works ol {
+        padding-left: 0; /* Reset padding */
+    }
+
+    #how-it-works li {
+        font-size: 16px; /* Adjust font size */
+    }
+
+    .testimonial {
+        padding: 15px; /* Adjust padding */
+    }
+
+    #testimonials h2 {
+        font-size: 24px; /* Adjust heading size */
+    }
+} 

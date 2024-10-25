@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Utility Management System</title>
+    <link rel="stylesheet" href="/styles/style-userDashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome, <%= username %>!</h1>
+        <p>Submit your issue and request a worker to resolve it.</p>
+    </header>
+
+    <section>
+        <h2>Report an Issue</h2>
+        <form action="/submit_issue" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="issue">Describe your issue:</label>
+                <textarea id="issue" name="issue" rows="5" required></textarea>
+            </div>
+            <div>
+                <label for="photo">Upload a photo (optional):</label>
+                <input type="file" id="photo" name="photo">
+            </div>
+            <div>
+                <label for="service">Select a service:</label>
+                <select id="service" name="service">
+                    <option value="plumber">Plumber</option>
+                    <option value="electrician">Electrician</option>
+                    <option value="mechanic">Mechanic</option>
+                </select>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Utility Genie. All rights reserved.</p>
+    </footer>
+</body>
+</html>

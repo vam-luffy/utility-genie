@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form</title>
+    <link rel="stylesheet" href="styles/a-style.css">
+</head>
+<body>
+    <header>
+        <h1>Application Form</h1>
+    </header>
+    <main>
+        <form action="/application_form" method="POST" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+
+            <label for="governmentID">Government ID:</label>
+            <input type="text" name="governmentID" required>
+
+            <label for="experience">Years of Experience:</label>
+            <input type="number" name="experience" required>
+
+            <label for="profession">Profession:</label>
+            <select name="profession" required>
+                <option value="plumber">Plumber</option>
+                <option value="electrician">Electrician</option>
+                <option value="mechanic">Mechanic</option>
+            </select>
+
+            <label for="location">Location:</label>
+            <input type="text" name="location" required>
+
+            <label for="profilePic">Profile Picture:</label>
+            <input type="file" name="profilePic" accept="image/*">
+
+            <button type="submit">Submit Application</button>
+        </form>
+    </main>
+</body>
+</html>

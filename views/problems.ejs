@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Reported Issues - Utility Management System</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/issues.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Your Reported Issues</h1>
+        <p>Here are the issues you have requested workers to resolve.</p>
+    </header>
+
+    <section class="issues-section">
+        <% if (issues && issues.length > 0) { %>
+            <div class="issues-list">
+                <% issues.forEach(issue => { %>
+                    <div class="issue-card">
+                        <h3>Service: <%= issue.service.charAt(0).toUpperCase() + issue.service.slice(1) %></h3>
+                        <p><strong>Issue Description:</strong> <%= issue.issue %></p>
+                        <% if (issue.photo) { %>
+                            <img src="/uploads/<%= issue.photo %>" alt="Issue Photo" class="issue-photo">
+                        <% } %>
+                        <form action="/delete_issue/<%= issue.id %>" method="POST" style="margin-top: 10px;">
+                            <button type="submit" class="delete-button">Delete Issue</button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p>No issues submitted yet.</p>
+        <% } %>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2024 Utility Genie. All rights reserved.</p>
+    </footer>
+</body>
+</html>

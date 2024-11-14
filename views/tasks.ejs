@@ -1,0 +1,39 @@
+<!-- views/tasks.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+</head>
+<body>
+    <h1>Tasks List</h1>
+
+    <% if (tasks.length === 0) { %>
+        <p>No tasks available.</p>
+    <% } else { %>
+        <ul>
+            <% tasks.forEach(task => { %>
+                <li>
+                    <h3><%= task.title %></h3>
+                    <p><%= task.description %></p>
+                    <p><strong>Location:</strong> <%= task.location %></p>
+                    <p><strong>Date:</strong> <%= task.date %></p>
+                    <p><strong>Time:</strong> <%= task.time %></p>
+
+                    <!-- Display different information for users and workers -->
+                    <% if (userRole === 'worker') { %>
+                        <!-- For workers, you might show a "Claim Task" button or task details -->
+                        <p><strong>Status:</strong> <%= task.status %></p>
+                        <button>Claim Task</button>
+                    <% } else if (userRole === 'user') { %>
+                        <!-- For users, you might show additional info about their tasks -->
+                        <p><strong>Assigned Worker:</strong> <%= task.assignedWorker || 'Not assigned' %></p>
+                    <% } %>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+
+</body>
+</html>

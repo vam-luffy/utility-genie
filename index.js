@@ -102,6 +102,28 @@ app.get('/plumbers', isAuthenticated, (req, res) => {
     res.render('plumbers');
 });
 
+
+// Define the route to render tasks, with the user role
+app.get('/tasks', isAuthenticated, (req, res) => {
+    const query = 'SELECT * FROM tasks'; // Your database query
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching tasks:', err);
+            return res.status(500).send('Server error');
+        }
+
+        // Assuming the user role is stored in req.user.role (adjust based on your setup)
+        const userRole = req.user.role;  // 'worker' or 'user'
+
+        // Render the 'tasks.ejs' page and pass both tasks and user role
+        res.render('tasks', { tasks: results, userRole: userRole });
+    });
+});
+
+
+
+
 app.get('/electricians', isAuthenticated, (req, res) => {
     res.render('electricians');
 });
@@ -110,7 +132,7 @@ app.get('/mechanics', isAuthenticated, (req, res) => {
     res.render('mechanics');
 });
 
-// Worker Dashboard Route
+
 app.get('/worker-dashboard', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
 
@@ -161,6 +183,9 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
         });
     });
 });
+
+
+
 
 
 app.post('/signup', async (req, res) => {

@@ -20,15 +20,22 @@
             <h3>Location: <%= user.location %></h3>
         </section>
 
+        <!-- Notification area for new tasks -->
+        <div id="notification" style="display: none; background-color: #ffeb3b; padding: 10px; border-radius: 5px; text-align: center;">
+            <p id="notification-text">New task available! Please refresh to see details.</p>
+        </div>
+
         <section>
             <h2>Your Tasks</h2>
             <% if (tasks.length > 0) { %>
-                <ul>
+                <ul id="task-list">
                     <% tasks.forEach(task => { %>
                         <li class="task-item">
                             <strong>Description:</strong> <%= task.work_description %><br>
                             <strong>Address:</strong> <%= task.address %><br>
-                            <strong>Date:</strong> <%= new Date(task.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %><br>                            <strong>Time:</strong> <%= task.time %>
+                            <strong>Date:</strong> <%= new Date(task.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %><br>
+                            <strong>Time:</strong> <%= task.time %><br>
+                            <button >Take Task</button>
                         </li>
                     <% }); %>
                 </ul>
@@ -36,34 +43,33 @@
                 <p>No tasks available at the moment.</p>
             <% } %>
         </section>
-        
-        
 
+        <!-- Application status section -->
         <section>
-            <section>
-                <h2>Application Status</h2>
-                <% if (application) { %>
-                    
-                    <p>Name: <%= application.name %></p>
-                    <p>Government ID: <%= application.government_id %></p>
-                    <p>Experience: <%= application.experience %> years</p>
-                    <p>Profession: <%= application.profession %></p>
-                    <p>Location: <%= application.location %></p>
-                    <% if (application.profile_picture) { %>
-                        <img src="<%= application.profile_picture %>" alt="Profile Picture" style="width: 150px; height: auto;">
-                    <% } %>
-                <% } else { %>
-                    <p>No application found. Please fill out the application form.</p>
-                    <form action="/application_form" method="GET">
-                        <button type="submit">Fill Application</button>
-                    </form>
+            <h2>Application Status</h2>
+            <% if (application) { %>
+                <p>Name: <%= application.name %></p>
+                <p>Government ID: <%= application.government_id %></p>
+                <p>Experience: <%= application.experience %> years</p>
+                <p>Profession: <%= application.profession %></p>
+                <p>Location: <%= application.location %></p>
+                <% if (application.profile_picture) { %>
+                    <img src="<%= application.profile_picture %>" alt="Profile Picture" style="width: 150px; height: auto;">
                 <% } %>
-                <b><p>Your application is submitted.</p></b>
-            </section>
-            
+            <% } else { %>
+                <p>No application found. Please fill out the application form.</p>
+                <form action="/application_form" method="GET">
+                    <button type="submit">Fill Application</button>
+                </form>
+            <% } %>
+            <b><p>Your application is submitted.</p></b>
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 Utility Management System</p>
     </footer>
+
+
+    
 </body>
 </html>

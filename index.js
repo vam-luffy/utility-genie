@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const multer = require('multer');
+const twilio = require('twilio');
 require('dotenv').config();
 
 const app = express();
@@ -13,8 +14,8 @@ const PORT = process.env.PORT || 3000;
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'management',
-    password: 'vamban0940'
+    database: 'utility_management',
+    password: 'ammanilaya@12'
 });
 
 connection.connect(err => {
@@ -24,6 +25,12 @@ connection.connect(err => {
     }
     console.log('Connected to MySQL database');
 });
+
+// Twilio configuration
+const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
+const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
+const twilioClient = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 // Session configuration
 app.use(session({
@@ -57,7 +64,8 @@ function isAuthenticated(req, res, next) {
 
 // Routes
 app.get('/', (req, res) => {
-    res.render('home', { user: req.session.user });
+    const confirmationMessage = req.query.confirmation ? 'Thank you for your booking! A confirmation has been sent to your mobile number.' : null;
+    res.render('home', { user: req.session.user, confirmationMessage });
 });
 
 app.get('/signup', (req, res) => {
@@ -107,10 +115,10 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
 
     const userQuery = `
-        SELECT users.*, workers.profession, workers.location 
-        FROM users 
-        LEFT JOIN workers ON users.id = workers.user_id 
-        WHERE users.id = ?`;
+        SELECT Userss.*, workers.profession, workers.location 
+        FROM Userss 
+        LEFT JOIN workers ON Userss.id = workers.user_id 
+        WHERE Userss.id = ?`;
 
     connection.query(userQuery, [userId], (error, userResults) => {
         if (error) {
@@ -151,16 +159,15 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
     });
 });
 
-// Signup route
 app.post('/signup', async (req, res) => {
-    const { username, email, password, 'confirm-password': confirmPassword, profession, location } = req.body;
+    const { username, email, password, 'confirm-password': confirmPassword, profession, location, phone } = req.body;
 
     if (password !== confirmPassword) {
         return res.status(400).send('Passwords do not match');
     }
 
     try {
-        const checkEmailSql = 'SELECT * FROM users WHERE email = ?';
+        const checkEmailSql = 'SELECT * FROM Userss WHERE email = ?';
         connection.query(checkEmailSql, [email], async (error, results) => {
             if (error) {
                 console.error(error);
@@ -172,8 +179,8 @@ app.post('/signup', async (req, res) => {
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
-            const sql = 'INSERT INTO users (username, email, password, profession, location) VALUES (?, ?, ?, ?, ?)';
-            connection.query(sql, [username, email, hashedPassword, profession, location], (error) => {
+            const sql = 'INSERT INTO Userss (username, email, password, profession, location, phone) VALUES (?, ?, ?, ?, ?, ?)';
+            connection.query(sql, [username, email, hashedPassword, profession, location, phone || null], (error) => {
                 if (error) {
                     console.error(error);
                     return res.status(500).send('Server error');
@@ -196,7 +203,7 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
-    connection.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    connection.query('SELECT * FROM Userss WHERE username = ?', [username], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Server error');
@@ -289,9 +296,9 @@ app.post('/application_form', upload.single('profilePic'), async (req, res) => {
 // Route to display all registered providers
 app.get('/find-providers', isAuthenticated, (req, res) => {
     const providersQuery = `
-        SELECT users.username, users.email, workers.profession, workers.location, workers.profile_picture 
-        FROM users 
-        JOIN workers ON users.id = workers.user_id`;
+        SELECT Userss.username, Userss.email, workers.profession, workers.location, workers.profile_picture 
+        FROM Userss 
+        JOIN workers ON Userss.id = workers.user_id`;
     
     connection.query(providersQuery, (error, results) => {
         if (error) {
@@ -309,9 +316,9 @@ app.get('/find_providers', isAuthenticated, (req, res) => {
 
     // SQL query to fetch providers based on the selected profession
     let providersQuery = `
-        SELECT users.username, users.email, workers.profession, workers.location, workers.profile_picture 
-        FROM users 
-        JOIN workers ON users.id = workers.user_id
+        SELECT Userss.username, Userss.email, workers.profession, workers.location, workers.profile_picture 
+        FROM Userss 
+        JOIN workers ON Userss.id = workers.user_id
     `;
 
     if (profession) {
@@ -337,17 +344,16 @@ app.get('/find_providers', isAuthenticated, (req, res) => {
     });
 });
 
-
 // Route to display the 'Book Now' page
 app.get('/book-now/:username', isAuthenticated, (req, res) => {
     const { username } = req.params;
     
     // Query to get provider details by username
     const providerQuery = `
-        SELECT users.username, users.email, workers.profession
-        FROM users 
-        JOIN workers ON users.id = workers.user_id
-        WHERE users.username = ?
+        SELECT Userss.username, Userss.email, workers.profession
+        FROM Userss 
+        JOIN workers ON Userss.id = workers.user_id
+        WHERE Userss.username = ?
     `;
     
     connection.query(providerQuery, [username], (error, results) => {
@@ -369,30 +375,74 @@ app.get('/book-now/:username', isAuthenticated, (req, res) => {
 app.post('/book-now/:username', isAuthenticated, (req, res) => {
     const { username } = req.params;
     const { address, work_description, date, time } = req.body;
-    const userId = req.session.user.id; // Assuming session contains user id
+    const userId = req.session.user.id;
 
     // Query to insert booking into the 'bookings' table
     const bookingQuery = `
         INSERT INTO bookings (user_id, provider_username, address, work_description, date, time)
         VALUES (?, ?, ?, ?, ?, ?)
     `;
-    
-    connection.query(bookingQuery, [userId, username, address, work_description, date, time], (error) => {
+
+    connection.query(bookingQuery, [userId, username, address, work_description, date, time], (error, result) => {
         if (error) {
             console.error('Error saving booking:', error);
             return res.status(500).send('Server error');
         }
-        
-        res.redirect('/confirmation');
+
+        // After saving the booking, send the SMS
+        sendBookingConfirmationSMS(userId, {
+            username,
+            address,
+            work_description,
+            date,
+            time
+        });
+
+        // Redirect to confirmation page after booking
+        res.redirect('/?confirmation=true');
     });
 });
 
-// Route to display a simple booking confirmation page
-app.get('/confirmation', isAuthenticated, (req, res) => {
-    res.send('<h1>Thank you for your booking! A confirmation has been sent to your email.</h1>');
-});
+// Function to send SMS confirmation
+function sendBookingConfirmationSMS(userId, bookingDetails) {
+    const getUserPhoneQuery = 'SELECT phone FROM Userss WHERE id = ?';
 
+    connection.query(getUserPhoneQuery, [userId], (error, results) => {
+        if (error) {
+            console.error('Error fetching user phone:', error);
+            return;
+        }
 
+        if (!results[0]?.phone) {
+            console.error('No phone number registered for SMS confirmation');
+            return;
+        }
+
+        const userPhone = results[0].phone;
+
+        // Format the SMS message
+        const message = `Booking Confirmed! 
+Service: ${bookingDetails.work_description}
+Provider: ${bookingDetails.username}
+Date: ${bookingDetails.date}
+Time: ${bookingDetails.time}
+Address: ${bookingDetails.address}`;
+
+        // Send SMS using Twilio
+        twilioClient.messages.create({
+            body: message,
+            from: TWILIO_PHONE_NUMBER,
+            to: '+91' + userPhone // User's phone number
+        })
+        .then(message => {
+            console.log('SMS sent successfully:', message.sid);
+        })
+        .catch(error => {
+            console.error('Error sending SMS:', error);
+        });
+    });
+}
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

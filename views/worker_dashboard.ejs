@@ -25,13 +25,19 @@
             <% if (tasks.length > 0) { %>
                 <ul>
                     <% tasks.forEach(task => { %>
-                        <li><%= task.description %></li>
+                        <li>
+                            <strong>Description:</strong> <%= task.work_description %><br>
+                            <strong>Address:</strong> <%= task.address %><br>
+                            <strong>Date:</strong> <%= new Date(task.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %><br>                            <strong>Time:</strong> <%= task.time %>
+                        </li>
                     <% }); %>
                 </ul>
             <% } else { %>
                 <p>No tasks available at the moment.</p>
             <% } %>
         </section>
+        
+        
 
         <section>
             <section>

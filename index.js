@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'utility_management',
-    password: 'ammanilaya@12'
+    password: 'vamban0940'
 });
 
 connection.connect(err => {
@@ -127,16 +127,19 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
         }
 
         const user = userResults[0];
-        const tasksQuery = 'SELECT * FROM tasks WHERE user_id = ?';
+
+        // Fetch the worker's tasks (including bookings)
+        const tasksQuery = `
+            SELECT * FROM bookings 
+            WHERE user_id = ?`;
+            
         connection.query(tasksQuery, [userId], (tasksError, tasks) => {
             if (tasksError) {
                 console.error(tasksError);
                 return res.status(500).send('Server error');
             }
 
-            const applicationQuery = `
-                SELECT * FROM workers 
-                WHERE user_id = ?`;
+            const applicationQuery = `SELECT * FROM workers WHERE user_id = ?`;
             connection.query(applicationQuery, [userId], (appError, appResults) => {
                 if (appError) {
                     console.error(appError);
@@ -151,13 +154,14 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
                         profession: user.profession,
                         location: user.location
                     },
-                    tasks: tasks,
+                    tasks: tasks,  // Pass the tasks (bookings) to the view
                     application: application
                 });
             });
         });
     });
 });
+
 
 app.post('/signup', async (req, res) => {
     const { username, email, password, 'confirm-password': confirmPassword, profession, location, phone } = req.body;
@@ -398,10 +402,11 @@ app.post('/book-now/:username', isAuthenticated, (req, res) => {
             time
         });
 
-        // Redirect to confirmation page after booking
-        res.redirect('/?confirmation=true');
+        // Redirect to the worker's dashboard to see the new task
+        res.redirect('/worker-dashboard');
     });
 });
+
 
 // Function to send SMS confirmation
 function sendBookingConfirmationSMS(userId, bookingDetails) {

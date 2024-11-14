@@ -81,12 +81,10 @@ app.get('/application_form', isAuthenticated, (req, res) => {
             return res.status(500).send('Server error');
         }
 
-        // If application exists, redirect to worker dashboard
         if (appResults.length > 0) {
             return res.redirect('/worker-dashboard');
         }
 
-        // If no application exists, render the application form
         res.render('application_form');
     });
 });
@@ -128,7 +126,6 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
                 return res.status(500).send('Server error');
             }
 
-            // Fetch application details
             const applicationQuery = `
                 SELECT * FROM workers 
                 WHERE user_id = ?`;
@@ -147,7 +144,7 @@ app.get('/worker-dashboard', isAuthenticated, (req, res) => {
                         location: user.location
                     },
                     tasks: tasks,
-                    application: application // Include application details
+                    application: application
                 });
             });
         });
@@ -254,7 +251,7 @@ app.post('/application_form', upload.single('profilePic'), async (req, res) => {
         return res.status(403).send('User not authenticated');
     }
 
-    const profilePicPath = req.file ? `/uploads/${req.file.filename}` : null; // Ensure this path is correct
+    const profilePicPath = req.file ? `/uploads/${req.file.filename}` : null;
     const checkApplicationQuery = 'SELECT * FROM workers WHERE user_id = ?';
     connection.query(checkApplicationQuery, [userId], (error, results) => {
         if (error) {
@@ -263,7 +260,6 @@ app.post('/application_form', upload.single('profilePic'), async (req, res) => {
         }
 
         if (results.length > 0) {
-            // Existing application found, update it
             const updateApplicationQuery = `
                 UPDATE workers 
                 SET name = ?, government_id = ?, experience = ?, profession = ?, location = ?, profile_picture = ?
@@ -276,7 +272,6 @@ app.post('/application_form', upload.single('profilePic'), async (req, res) => {
                 return res.redirect('/worker-dashboard');
             });
         } else {
-            // No existing application found, insert a new one
             const insertApplicationQuery = `
                 INSERT INTO workers (user_id, name, email, government_id, experience, profession, location, profile_picture)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -291,7 +286,113 @@ app.post('/application_form', upload.single('profilePic'), async (req, res) => {
     });
 });
 
-// Start the server
+// Route to display all registered providers
+app.get('/find-providers', isAuthenticated, (req, res) => {
+    const providersQuery = `
+        SELECT users.username, users.email, workers.profession, workers.location, workers.profile_picture 
+        FROM users 
+        JOIN workers ON users.id = workers.user_id`;
+    
+    connection.query(providersQuery, (error, results) => {
+        if (error) {
+            console.error('Error fetching providers:', error);
+            return res.status(500).send('Server error');
+        }
+        
+        res.render('find_providers', { providers: results, user: req.session.user });
+    });
+});
+
+// Route to display all registered providers with search functionality
+app.get('/find_providers', isAuthenticated, (req, res) => {
+    const profession = req.query.profession || ''; // Get the profession from the query, or default to an empty string
+
+    // SQL query to fetch providers based on the selected profession
+    let providersQuery = `
+        SELECT users.username, users.email, workers.profession, workers.location, workers.profile_picture 
+        FROM users 
+        JOIN workers ON users.id = workers.user_id
+    `;
+
+    if (profession) {
+        providersQuery += ` WHERE workers.profession = ?`; // Add profession filter to the query
+    }
+
+    connection.query(providersQuery, [profession], (error, results) => {
+        if (error) {
+            console.error('Error fetching providers:', error);
+            return res.status(500).send('Server error');
+        }
+
+        // Check if no providers are found
+        const noProvidersFound = results.length === 0;
+
+        // Pass profession and noProvidersFound to the view
+        res.render('find_providers', { 
+            providers: results, 
+            user: req.session.user,
+            profession: profession,  // Ensure this is passed to the view
+            noProvidersFound: noProvidersFound // Also pass the noProvidersFound flag
+        });
+    });
+});
+
+
+// Route to display the 'Book Now' page
+app.get('/book-now/:username', isAuthenticated, (req, res) => {
+    const { username } = req.params;
+    
+    // Query to get provider details by username
+    const providerQuery = `
+        SELECT users.username, users.email, workers.profession
+        FROM users 
+        JOIN workers ON users.id = workers.user_id
+        WHERE users.username = ?
+    `;
+    
+    connection.query(providerQuery, [username], (error, results) => {
+        if (error) {
+            console.error('Error fetching provider details:', error);
+            return res.status(500).send('Server error');
+        }
+        
+        if (results.length > 0) {
+            const provider = results[0];
+            res.render('book_now', { provider });
+        } else {
+            res.status(404).send('Provider not found');
+        }
+    });
+});
+
+// Route to handle booking form submission
+app.post('/book-now/:username', isAuthenticated, (req, res) => {
+    const { username } = req.params;
+    const { address, work_description, date, time } = req.body;
+    const userId = req.session.user.id; // Assuming session contains user id
+
+    // Query to insert booking into the 'bookings' table
+    const bookingQuery = `
+        INSERT INTO bookings (user_id, provider_username, address, work_description, date, time)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    
+    connection.query(bookingQuery, [userId, username, address, work_description, date, time], (error) => {
+        if (error) {
+            console.error('Error saving booking:', error);
+            return res.status(500).send('Server error');
+        }
+        
+        res.redirect('/confirmation');
+    });
+});
+
+// Route to display a simple booking confirmation page
+app.get('/confirmation', isAuthenticated, (req, res) => {
+    res.send('<h1>Thank you for your booking! A confirmation has been sent to your email.</h1>');
+});
+
+
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });

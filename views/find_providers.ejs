@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Providers</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/findWorkers.css">
+
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/how-it-works">How It Works</a></li>
+                <li><a href="/testimonials">Testimonials</a></li>
+                <% if (user) { %>
+                    <li><a href="/find-providers">Find Providers</a></li>
+                    <li><a href="/work-with-us">Work with Us</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                <% } else { %>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Sign Up</a></li>
+                <% } %>
+            </ul>
+        </nav>
+        <h1>Find Your Service Provider</h1>
+    </header>
+
+    <main>
+        <!-- Search Form -->
+        <section id="search">
+            <form class="search-form" method="GET" action="/find_providers">
+                <select name="profession">
+                    <option value="">Select a profession</option>
+                    <option value="plumber" <% if (profession === 'plumber') { %>selected<% } %>>Plumber</option>
+                    <option value="electrician" <% if (profession === 'electrician') { %>selected<% } %>>Electrician</option>
+                    <option value="carpenter" <% if (profession === 'carpenter') { %>selected<% } %>>Carpenter</option>
+                    <option value="cleaner" <% if (profession === 'cleaner') { %>selected<% } %>>Cleaner</option>
+                    <!-- Add more professions as needed -->
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </section>
+
+        <!-- Providers Section -->
+        <section id="providers">
+            <h2>Available Providers</h2>
+            <% if (noProvidersFound) { %>
+                <div class="no-users-message">
+                    <p>No current users in this profession. Please check back later.</p>
+                </div>
+            <% } else { %>
+                <% providers.forEach(provider => { %>
+                    <div class="provider-card">
+                        <% if (provider.profile_picture) { %>
+                            <img src="<%= provider.profile_picture %>" alt="<%= provider.username %>'s Profile Picture">
+                        <% } else { %>
+                            <img src="/images/default-profile.png" alt="Default Profile Picture">
+                        <% } %>
+                        <div class="provider-info">
+                            <h3><%= provider.username %></h3>
+                            <p><strong>Profession:</strong> <%= provider.profession %></p>
+                            <p><strong>Location:</strong> <%= provider.location %></p>
+                            <p><strong>Email:</strong> <%= provider.email %></p>
+                        </div>
+                        <a href="/book-now/<%= provider.username %>" class="book-now-button">Book Now</a>
+                    </div>
+                <% }); %>
+            <% } %>
+        </section>
+    </main>
+    <br>
+    <br>
+    <br>
+    <br><br>
+
+    <footer>
+        <p>&copy; 2024 Utility Genie. All rights reserved.</p>
+    </footer>
+</body>
+</html>

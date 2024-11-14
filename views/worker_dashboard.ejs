@@ -37,7 +37,7 @@
             <section>
                 <h2>Application Status</h2>
                 <% if (application) { %>
-                    <p>Your application is submitted.</p>
+                    
                     <p>Name: <%= application.name %></p>
                     <p>Government ID: <%= application.government_id %></p>
                     <p>Experience: <%= application.experience %> years</p>
@@ -52,6 +52,7 @@
                         <button type="submit">Fill Application</button>
                     </form>
                 <% } %>
+                <b><p>Your application is submitted.</p></b>
             </section>
             
     </main>
